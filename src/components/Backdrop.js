@@ -20,22 +20,33 @@ class Backdrop extends Component {
   // }
 
   render() {
-    const { instagramUrl } = this.props;
-    console.log(this.props.instagramUrl.url);
-    // console.log(instagramUrl.url);
+    const { backdrop } = this.props;
+    console.log(backdrop.instagramPhotoUrl);
     return (
-      // <img src={`${url.url}media/?size=m`} alt="" />
-      <BackdropImage href={instagramUrl.url} />
-      // <InstagramEmbed url={url.url} maxWidth={320} hideCaption={false} containerTagName="div" protocol="" onLoading={() => {}} onSuccess={() => {}} onAfterRender={() => {}} onFailure={() => {}} />
+      <BackdropCard>
+        <BackdropImage href={backdrop.instagramPhotoUrl} />
+        <BackdropDescription>{backdrop.description}</BackdropDescription>
+      </BackdropCard>
     );
   }
 }
 
 export default Backdrop;
 
+const BackdropCard = styled.div`
+  border: 1px solid #f5f5f5;
+  border-radius: 5px;
+`;
+
 const BackdropImage = styled.a`
   height: 160px;
   background: url(${props => props.href}media/?size=m) no-repeat;
   background-size: cover;
   border-radius: 5px;
+  display: block;
+`;
+
+const BackdropDescription = styled.p`
+  padding: 1rem;
+  color: black;
 `;

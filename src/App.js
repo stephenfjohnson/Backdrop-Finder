@@ -7,37 +7,34 @@ import './App.css';
 import MapboxMap from './components/Map';
 import Backdrop from './components/Backdrop';
 import laLocations from './data/LaLocations';
+import Loader from './components/Loader';
+
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
+// __SIMPLE_API_ENDPOINT__ looks like: 'https://api.graph.cool/simple/v1/__SERVICE_ID__'
+// const httpLink = new HttpLink({ uri: 'https://api.graph.cool/simple/v1/cj9w1lpyp1pd101735znmymnf' });
+
 // import Locations from './components/Locations';
 
 // Explore taken => https://www.instagram.com/p/BYmpLLggVWn/?taken-at=262123225
 
 class App extends Component {
-  // componentWillMount() {
-  //   function loadInstagram() {
-  //     if (!window.instgrm) {
-  //       const s = document.createElement('script');
-  //       console.log(s);
-  //       s.async = s.defer = true;
-  //       s.src = `https://platform.instagram.com/en_US/embeds.js`;
-  //       s.id = 'react-instagram-embed-script';
-  //       console.log(s.id);
-  //       console.log(s.onload);
-  //       // s.onload = this.onLoad;
-  //       const body: HTMLElement | null = document.body;
-  //       if (body) {
-  //         body.appendChild(s);
-  //       }
-  //     }
-  //     console.log(`Memes`);
-  //   }
-  //   loadInstagram();
-  // }
+  componentWillReceiveProps(nextProps) {
+    console.log(ALL_BACKDROPS_QUERY);
 
+    this.props.allBackdropsQuery.refetch();
+    // if (this.props.location.key !== nextProps.location.key) {
+    //
+    // }
+    console.log(ALL_BACKDROPS_QUERY);
+  }
   render() {
-    // console.log(this);
-    // console.log(this.state);
-    // console.log(this.mapContainer);
-    console.log();
+    console.log('console.log(this.props.allPostsQuery);');
+    console.log(this.props.allBackdropsQuery);
+    if (this.props.allBackdropsQuery.loading) {
+      return <Loader />;
+    }
 
     return (
       <div className="App">
@@ -46,14 +43,12 @@ class App extends Component {
           <h3>locating cool backdrops for your photos around your city.</h3>
         </Header>
         {/* <Locations /> */}
-        <MapboxMap data={laLocations} />
-        <Backdrops>{laLocations.map(instagramUrl => <Backdrop key={instagramUrl.id} instagramUrl={instagramUrl} />)}</Backdrops>
+        <MapboxMap data={this.props.allBackdropsQuery.allBackdrops} />
+        <Backdrops>{this.props.allBackdropsQuery.allBackdrops.map(backdrop => <Backdrop key={backdrop.id} backdrop={backdrop} />)}</Backdrops>
       </div>
     );
   }
 }
-
-export default App;
 
 const Header = styled.header`
   max-width: 1170px;
@@ -76,3 +71,22 @@ const Backdrops = styled.section`
   grid-template-columns: repeat(5, 1fr);
   grid-column-gap: 2rem;
 `;
+
+const ALL_BACKDROPS_QUERY = gql`
+  query allBackdropsQuery {
+    allBackdrops(orderBy: id_DESC) {
+      id
+      description
+      instagramPhotoUrl
+    }
+  }
+`;
+
+const ListPageWithQuery = graphql(ALL_BACKDROPS_QUERY, {
+  name: 'allBackdropsQuery',
+  options: {
+    fetchPolicy: 'network-only'
+  }
+})(App);
+
+export default ListPageWithQuery;

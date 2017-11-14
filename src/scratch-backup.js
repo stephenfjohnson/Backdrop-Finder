@@ -179,3 +179,24 @@ map.on('load', () => {
     }
   });
 });
+
+// componentWillMount() {
+//   function loadInstagram() {
+//     if (!window.instgrm) {
+//       const s = document.createElement('script');
+//       console.log(s);
+//       s.async = s.defer = true;
+//       s.src = `https://platform.instagram.com/en_US/embeds.js`;
+//       s.id = 'react-instagram-embed-script';
+//       console.log(s.id);
+//       console.log(s.onload);
+//       // s.onload = this.onLoad;
+//       const body: HTMLElement | null = document.body;
+//       if (body) {
+//         body.appendChild(s);
+//       }
+//     }
+//     console.log(`Memes`);
+//   }
+//   loadInstagram();
+// }

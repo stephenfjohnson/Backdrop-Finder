@@ -17,13 +17,12 @@ class MapboxMap extends React.Component {
       lng: -118.2387,
       lat: 34.0485,
       zoom: 13,
-      tourIsPlaying: true,
-      isToggleOn: true
+      tourIsPlaying: true
     };
 
     // This binding is nessary to make `this` work in the callback
-    this.playTour = this.playTour.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    // this.playTour = this.playTour.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
   }
 
   playTour() {
@@ -32,21 +31,16 @@ class MapboxMap extends React.Component {
     }));
   }
 
-  handleClick() {
-    this.setState({
-      tourIsPlaying: false
-    });
-    console.log(this.state.tourIsPlaying);
-  }
-
   componentDidMount() {
     const { data } = this.props;
-    console.log(data[0].camera.center[0]);
+    console.log('🚧 🚧 🚧 🚧 DB DATA 🚧 🚧 🚧 🚧');
+    console.log(data);
+    // console.log(data[0].camera.center[0]);
 
-    this.setState = {
-      lng: data[0].camera.center[0],
-      lat: data[0].camera.center[1]
-    };
+    // this.setState = {
+    //   lng: data[0].camera.center[0],
+    //   lat: data[0].camera.center[1]
+    // };
 
     const { lng, lat, zoom } = this.state;
     // Container to put React generated content in.
@@ -144,8 +138,7 @@ class MapboxMap extends React.Component {
           </div>
           <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
         </MapContainer>
-        <button onClick={this.playTour}>{this.state.tourIsPlaying ? 'ON' : 'OFF'}</button>
-        <button onClick={this.handleClick}>Click me</button>
+        <button onClick={() => this.playTour()}>{this.state.tourIsPlaying ? 'Play Tour' : 'Stop Tour'}</button>
       </div>
     );
   }
