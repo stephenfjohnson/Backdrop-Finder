@@ -1,64 +1,79 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { transparentize } from 'polished';
+import { media } from '../style-utils';
 import mapboxgl from 'mapbox-gl';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import Loader from './Loader';
 
 class Locations extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { isToggleOn: true };
-  // }
-  // flyLosAngeles() {
-  //   handleChange = e => {
-  //     e.preventDefault();
-  //     console.log('The link was clicked.');
-  //   };
-  // }
-  componentDidMount() {}
+  constructor(props) {
+    super(props);
+    this.state = {
+      sellectedCityId: ''
+    };
+    // this.onClick = this.handleClick.bind(this);
+  }
 
-  flyLosAngeles = () => {
-    const start = [-74.5, 40];
-    const end = [74.5, 40];
-    // depending on whether we're currently at point a or b, aim for
-    // point a or b
-    let target = isAtStart ? end : start;
-    // and now we're at the opposite point
-    isAtStart = !isAtStart;
+  componentWillReceiveProps(nextProps) {
+    this.props.allCitiesQuery.refetch();
+    console.log(LIST_CITIES);
+  }
 
-    console.log('this is:', this);
-    map.flyTo({
-      // These options control the ending camera position: centered at
-      // the target, at zoom level 9, and north up.
-      center: target,
-      zoom: 9,
-      bearing: 0,
-
-      // These options control the flight curve, making it move
-      // slowly and zoom out almost completely before starting
-      // to pan.
-      speed: 0.2, // make the flying slow
-      curve: 1, // change the speed at which it zooms out
-
-      // This can be any easing function: it takes a number between
-      // 0 and 1 and returns another number between 0 and 1.
-      easing: function(t) {
-        return t;
-      }
+  handleClick(e) {
+    e.preventDefault();
+    const value = e.target.value;
+    this.setState({ sellectedCityId: value }, () => {
+      console.log(`sellectedCityId: ${this.state.sellectedCityId}`);
     });
-  };
+
+    this.props
+      .mutate({
+        variables: { repoFullName: 'apollographql/apollo-client' }
+      })
+      .then(({ data }) => {
+        console.log('got data', data);
+      })
+      .catch(error => {
+        console.log('there was an error sending the query', error);
+      });
+  }
 
   render() {
+    if (this.props.allCitiesQuery.loading) {
+      return <Loader />;
+    }
     return (
       <LocationWrapper>
-        <Location onClick={this.flyLosAngeles}>Los Angeles</Location>
-        {/* <Location onClick={flySeattle}>Seattle</Location>
-        <Location onclick={flySanFrancisco}>San Francisco</Location>
-        <Location onclick={flyNewYork}>New York</Location> */}
+        {this.props.allCitiesQuery.allCities.map((city, index) => (
+          <Location onClick={e => this.handleClick(e, city.id)} key={city.id} value={city.id}>
+            {city.name}
+          </Location>
+        ))}
       </LocationWrapper>
     );
   }
 }
 
-export default Locations;
+const LIST_CITIES = gql`
+  query allCitiesQuery {
+    allCities(orderBy: id_DESC) {
+      id
+      name
+    }
+  }
+`;
+
+const changeCity = gql`
+  mutation changeCity($repoFullName: String!) {
+    changeCity(repoFullName: $repoFullName) {
+      id
+    }
+  }
+`;
+
+export default graphql(LIST_CITIES, { name: 'allCitiesQuery' })(Locations);
 
 const LocationWrapper = styled.section`
   max-width: 1170px;
@@ -66,14 +81,31 @@ const LocationWrapper = styled.section`
   margin: 0 auto 2rem auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  ${media.handheld`
+    position: absolute;
+    top: 0;
+    left: 0;
+    grid-template-columns: repeat(1, 1fr);
+    font-size: 2rem;
+    padding: 2rem 0;
+    z-index: 10;
+    background: ${transparentize(0.1, '#fff')};
+  `};
 `;
 
 const Location = styled.button`
   color: #b8bfd3;
-  padding: 1rem;
   text-align: center;
+  padding: 1rem 0;
   &:hover {
     background: #efefef;
     cursor: pointer;
   }
+  ${media.handheld`
+    padding: 1.4rem 1rem 1.4rem 2rem;
+    text-align: left;
+    color: black;
+  `};
 `;
+
+const Dropdown = styled.setion;
