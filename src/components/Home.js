@@ -41,7 +41,7 @@ class Home extends React.Component {
     );
   }
   changeCity = async () => {
-    await this.props.mutate({ variables: { id: 'cjac8gnk83vjo01831fcrw0u6' } });
+    await this.props.mutate({ variables: { id: 'cjac8grum3vjr0183k17y4ijm' } });
   };
 }
 
@@ -84,7 +84,7 @@ const DetailPageWithGraphQL = compose(
     name: 'changeIdMutation',
     options: {
       variables: {
-        id: 'cjac8gnk83vjo01831fcrw0u6'
+        id: 'cjac8grum3vjr0183k17y4ijm'
       }
     }
   })
