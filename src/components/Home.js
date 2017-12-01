@@ -12,34 +12,12 @@ import gql from 'graphql-tag';
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      sellectedCityId: 'cjac8gnk83vjo01831fcrw0u6'
-    };
   }
   componentWillReceiveProps(nextProps) {
     this.props.allBackdropsQuery.refetch();
     console.log(this.props.allBackdropsQuery);
     console.log(this.props.allBackdropsQuery.variables.id);
   }
-
-  // onClick = () => {
-  //   this.props.allBackdropsQuery.updateQuery({ variables: { id: 'cjac8grum3vjr0183k17y4ijm' } });
-  //   this.props.allBackdropsQuery.refetch();
-  //   console.log(this.props.allBackdropsQuery);
-  //   console.log(this.props.allBackdropsQuery.variables.id);
-  //   console.log(this.props.allBackdropsQuery.City.name);
-  //
-  //   // this.props
-  //   //   .allBackdropsQuery({
-  //   //     variables: { id: 'cjac8gnk83vjo01831fcrw0u6' }
-  //   //   })
-  //   //   .then(({ data }) => {
-  //   //     console.log('got data', data);
-  //   //   })
-  //   //   .catch(error => {
-  //   //     console.log('there was an error sending the query', error);
-  //   //   });
-  // };
 
   render() {
     console.log(`this.props.data`);
@@ -55,8 +33,7 @@ class Home extends React.Component {
 
     return (
       <div className="App">
-        <div onClick={this.changeCity}>Delete</div>
-        {/* <div onClick={this.onClick}>Click me</div> */}
+        <button onClick={this.changeCity}>Change what city is being queried</button>
         <Locations />
         {/* <MapboxMap data={this.props.allBackdropsQuery.City} /> */}
         {/* <Backdrop data={this.props.allBackdropsQuery.City} /> */}
