@@ -3,45 +3,33 @@ import styled from 'styled-components';
 // import InstagramEmbed from 'react-instagram-embed';
 
 class Backdrop extends Component {
-  constructor(props) {
-    super(props);
-    const { data } = this.props;
-    this.state = {
-      data: data.backdrops
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   const { data } = this.props;
+  //   this.state = {
+  //     data: data.backdrops
+  //   };
+  // }
   render() {
-    const { data } = this.state;
-    console.log(`Backdrop Data`);
-    console.log(data);
+    const { backdrop } = this.props;
+    // const { data } = this.state;
+    // console.log(`Backdrop Data`);
+    // console.log(`Backdrop Props`);
+    // console.log(this.props);
     return (
-      <BackdropWrapper>
-        {data.map((backdrop, index) => (
-          <BackdropCard key={backdrop.id}>
-            <Image href={backdrop.instagramPhotoUrl} />
-            <Title>{backdrop.title}</Title>
-            <Description>
-              <i>{backdrop.description}</i>
-            </Description>
-            <Directions href={`http://maps.apple.com/?daddr=?ll=${backdrop.lat},${backdrop.lng}`}>📍 Get Directions</Directions>
-          </BackdropCard>
-        ))}
-      </BackdropWrapper>
+      <BackdropCard>
+        <Image href={backdrop.instagramPhotoUrl} />
+        <Title>{backdrop.title}</Title>
+        <Description>
+          <i>{backdrop.description}</i>
+        </Description>
+        <Directions href={`http://maps.apple.com/?daddr=?ll=${backdrop.lat},${backdrop.lng}`}>📍 Get Directions</Directions>
+      </BackdropCard>
     );
   }
 }
 
 export default Backdrop;
-
-const BackdropWrapper = styled.div`
-  width: 100%;
-  max-width: 1170px;
-  margin: 0 auto;
-  display: grid;
-  padding: 2rem 0;
-  grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 2rem;
-`;
 
 const BackdropCard = styled.div`
   border: 1px solid #f5f5f5;
