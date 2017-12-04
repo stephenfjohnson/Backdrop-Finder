@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Logo from './svgs/Logo';
 // import InstagramEmbed from 'react-instagram-embed';
 
 class Backdrop extends Component {
@@ -23,7 +24,12 @@ class Backdrop extends Component {
         <Description>
           <i>{backdrop.description}</i>
         </Description>
-        <Directions href={`http://maps.apple.com/?daddr=?ll=${backdrop.lat},${backdrop.lng}`}>📍 Get Directions</Directions>
+        <Directions href={`http://maps.apple.com/?daddr=?ll=${backdrop.lat},${backdrop.lng}`}>
+          <span className="logo-wrap">
+            <Logo color="white" />
+          </span>
+          <span>Get Directions</span>
+        </Directions>
       </BackdropCard>
     );
   }
@@ -33,6 +39,7 @@ export default Backdrop;
 
 const BackdropCard = styled.div`
   border: 1px solid #f5f5f5;
+  border: 1px solid #4a485a;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -41,16 +48,23 @@ const BackdropCard = styled.div`
 
 const backgroundSize = 'media/?size=m';
 const Image = styled.a`
-  height: 160px;
+  ${'' /* height: 160px; */} width: 100%;
   background: url(${props => props.href}${backgroundSize}) no-repeat;
   background-size: cover;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   display: block;
+  &:after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
 `;
 
 const Title = styled.h3`
   padding: 1rem 1rem 0 1rem;
   color: #222328;
+  color: white;
   font-weight: 500;
 `;
 
@@ -64,10 +78,22 @@ const Description = styled.p`
 
 const Directions = styled.a`
   background: #efefef;
+  background: #eb717c;
   color: #b8bfd3;
+  color: white;
   padding: 0.5rem 1rem;
-  margin: 1rem 0.5rem;
+  margin: 1rem;
   border-radius: 5px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  display: flex;
+  flex-direction: row;
+  span {
+    flex: 1;
+    justify-content: center;
+  }
+  span.logo-wrap {
+    flex: 0 13px;
+    margin-right: 0.8rem;
+  }
 `;

@@ -138,6 +138,7 @@ const Line = styled.div`
   margin: 1rem 0;
   height: 1px;
   background: #f0f2f7;
+  background: #4a485a;
 `;
 
 const Form = styled.form`
@@ -218,6 +219,7 @@ const Input = styled.div`
 
 const Button = styled.button`
   background: #3b55e6;
+  background: #eb717c;
   border-radius: 100px;
   color: #ffffff;
   letter-spacing: 1px;

@@ -2,14 +2,9 @@ import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from 'mapbox-gl-geocoder';
 import styled from 'styled-components';
-// import Tooltip from './Tooltip';
-
-// import InstagramEmbed from 'react-instagram-embed';
 
 // Add Mapbox token TODO: send to config file
-
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1Ijoic3RlcGhlbmZqb2huc29uIiwiYSI6ImNqOWt4NmdyaTRkdXEzM2xzejhwMThiZnQifQ.7CZRuejXYOHFrHA_IF3u7w';
-mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
 // Create map Component
 class MapboxMap extends React.Component {
@@ -17,17 +12,16 @@ class MapboxMap extends React.Component {
     super(props);
     const { data } = this.props;
     console.log(`Backdrop Data`);
-    console.log(data.name);
-    console.log(data.backdrops);
+    console.log(data);
     // Set init map location as well as tour status
     this.state = {
-      data: data.backdrops,
+      // data: data.backdrops,
       lng: -118.2387,
       lat: 34.0485,
       zoom: 13,
       pitch: 30,
       bering: 0,
-      tourIsPlaying: true,
+      tourIsPlaying: false,
       currentLocation: [-118.2387, 34.0485],
       value: 0,
       mapCenter: []
@@ -38,52 +32,63 @@ class MapboxMap extends React.Component {
     this.setState(prevState => ({
       tourIsPlaying: !prevState.tourIsPlaying
     }));
+    console.log(this.state.tourIsPlaying);
   }
 
-  componentDidMount() {
-    console.log(this.props);
-    const { data } = this.state;
-    // console.log(`Component Did Mount Data`);
-    // console.log(data);
-    // console.log(`State Data `);
-    // console.log(this.state.data);
-
+  componentWillReceiveProps() {
     const increment = 1;
     let up = true;
-    let ceiling = 1;
-    // let ceiling = data.length;
+    let ceiling = this.props.data.backdrops.length;
     let value = 0;
 
     // -= 1 removes one from length
 
-    function plusOne() {
+    function plusOne(value) {
       if (up === true && value <= ceiling) {
         value += increment;
-        return value;
         if (value === ceiling) {
           up = false;
           return value;
         } else {
-          console.log(`Memes 1`);
-        }
-      } else {
-        up = false;
-        value -= increment;
-        if (value === 0) {
-          up = true;
-          return value;
-        } else {
-          console.log(`Memes 2`);
+          up = false;
+          value -= increment;
+          if (value === 0) {
+            up = true;
+            return value;
+          }
         }
       }
+
+      // this.setState({
+      //   value: value
+      // });
     }
 
+    // map.flyTo({
+    //   center: this.state.currentLocation,
+    //   zoom: this.state.zoom,
+    //   pitch: this.state.pitch,
+    //   bering: this.state.bering,
+    //   // This can be any easing function: it takes a number between
+    //   // 0 and 1 and returns another number between 0 and 1.
+    //   speed: 0.9, // make the flying slow
+    //   curve: 1,
+    //   easing: function(t) {
+    //     return t;
+    //   }
+    // });
+
     setInterval(() => {
-      plusOne();
-      let memes = this.state.value;
-      let intLng = Number(data[memes].lng);
-      let intLat = Number(data[memes].lat);
+      console.log(`Ran Set Interval`);
+      console.log();
+      const { data } = this.props;
+      console.log(data);
+      plusOne(this.state.value);
+      let theValueFormerlyKnownAsMemes = this.state.value;
+      let intLng = Number(data.backdrops[theValueFormerlyKnownAsMemes].lng);
+      let intLat = Number(data.backdrops[theValueFormerlyKnownAsMemes].lat);
       let cameraLocation = [intLng, intLat];
+      console.log(cameraLocation);
       let randomBearing = Math.floor(Math.random() * 201) - 100;
       // let randomPitch = Math.floor(Math.random() * 41) - 20;
       let randomPitch = 30;
@@ -96,47 +101,44 @@ class MapboxMap extends React.Component {
         pitch: randomPitch,
         zoom: randomZoom
       });
+      console.log(this.state);
     }, 4000);
 
-    const { lng, lat, zoom, tourIsPlaying } = this.state;
+    const { lng, lat, pitch, bering, zoom, tourIsPlaying } = this.state;
     // Container to put React generated content in.
     this.tooltipContainer = document.createElement('div');
 
     const map = new mapboxgl.Map({
       container: this.mapContainer,
-      style: 'mapbox://styles/mapbox/light-v9',
+      style: 'mapbox://styles/mapbox/dark-v9',
       center: [lng, lat],
       zoom
     });
 
-    map.addControl(
-      new MapboxGeocoder({
-        accessToken: MAPBOX_ACCESS_TOKEN
-      })
-    );
-
-    // const geocoder = new MapboxGeocoder({
-    //   accessToken: 'pk.eyJ1Ijoic3RlcGhlbmZqb2huc29uIiwiYSI6ImNqOWt4NmdyaTRkdXEzM2xzejhwMThiZnQifQ.7CZRuejXYOHFrHA_IF3u7w'
-    // });
-    //
-    // window.geocoder = geocoder;
-
-    // map.once('moveend', () => {
-    //   let index = 0;
-    //   // Duration the slide is on screen after interaction
-    //   window.setTimeout(() => {
-    //     // Increment index
-    //
-    //     index = index + 1 === locations.length ? 0 : index + 1;
-    //     console.log(index);
-    //     playback(index);
-    //   }, 3000); // After callback, show the location for 3 seconds.
-    // });
-
     map.on('load', () => {
-      const { data } = this.state;
+      const { data } = this.props;
+      console.log(`🚧 🚧 🚧 MAP ON LOAD DATA 🚧 🚧 🚧`);
       console.log(data);
-      for (let item of data) {
+
+      console.log(`🚧 🚧 🚧 STATE VALUE 🚧 🚧 🚧`);
+      console.log(this.state.value);
+
+      map.flyTo({
+        center: this.state.currentLocation,
+        zoom: zoom,
+        pitch: pitch,
+        bering,
+        // This can be any easing function: it takes a number between
+        // 0 and 1 and returns another number between 0 and 1.
+        speed: 0.9, // make the flying slow
+        curve: 1,
+        easing: function(t) {
+          return t;
+        }
+      });
+
+      // This places all the locations on the map onload.
+      for (let item of data.backdrops) {
         let intLng = Number(item.lng);
         let intLat = Number(item.lat);
         let markerLocation = [Number(item.lng), Number(item.lat)];
@@ -150,39 +152,52 @@ class MapboxMap extends React.Component {
 
         new mapboxgl.Marker(customMarker).setLngLat(markerLocation).addTo(map);
 
-        console.log(`🚧 🚧 🚧 ${item.title} 🚧 🚧 🚧`);
-        console.log(item);
-        console.log(customMarker);
-        console.log(item.instagramPhotoUrl);
-        console.log(`${item.instagramPhotoUrl}media/?size=t`);
-        console.log(markerLocation);
-        console.log(`🚧 🚧 🚧 ${item.title} Done 🚧 🚧 🚧`);
+        // console.log(`🚧 🚧 🚧 ${item.title} 🚧 🚧 🚧`);
+        // console.log(item);
+        // console.log(customMarker);
+        // console.log(item.instagramPhotoUrl);
+        // console.log(`${item.instagramPhotoUrl}media/?size=t`);
+        // console.log(markerLocation);
+        // console.log(`🚧 🚧 🚧 ${item.title} Done 🚧 🚧 🚧`);
 
         customMarker.addEventListener('click', function() {
-          window.alert(item.title);
+          window.alert(`Title: ${item.title} Lng: ${item.lng} Lat: ${item.lat}`);
         });
       }
 
-      setInterval(() => {
-        const { zoom, pitch, bering } = this.state;
-        if (this.state.tourIsPlaying === false) {
-          map.flyTo({
-            center: this.state.currentLocation,
-            zoom: zoom,
-            pitch: pitch,
-            bering,
-            // This can be any easing function: it takes a number between
-            // 0 and 1 and returns another number between 0 and 1.
-            speed: 0.9, // make the flying slow
-            curve: 1,
-            easing: function(t) {
-              return t;
-            }
-          });
-        } else {
-          console.log(`Not running`);
-        }
-      }, 4000);
+      // Timing function sudo code
+      //.I want the function to check if tourIsPlaying === false
+
+      // If so the map center moves to the first lng lat in the list
+      // Wait 4 seconds and check for second item in list to travel to
+      // While traving dont
+
+      // setTimeout(() => {
+      //   const { zoom, pitch, bering } = this.state;
+      //   if (this.state.tourIsPlaying === false) {
+      //     map.flyTo({
+      //       center: this.state.currentLocation,
+      //       zoom: zoom,
+      //       pitch: pitch,
+      //       bering,
+      //       // This can be any easing function: it takes a number between
+      //       // 0 and 1 and returns another number between 0 and 1.
+      //       speed: 0.9, // make the flying slow
+      //       curve: 1,
+      //       easing: function(t) {
+      //         return t;
+      //       }
+      //     });
+      //     let addOneToValue = this.state.value++;
+      //     this.setState({
+      //       value: addOneToValue
+      //     });
+      //     console.log(addOneToValue);
+      //     console.log(this.state.value);
+      //   } else {
+      //     console.log(`Not running`);
+      //   }
+      // }, 4000);
     });
 
     map.on('moveend', () => {
@@ -194,41 +209,36 @@ class MapboxMap extends React.Component {
       console.log(this.state.mapCenter);
     });
 
-    // // Create Popup with tooltip
-    // const popup = new mapboxgl.Popup({
-    //   closeButton: true,
-    //   closeOnClick: true
-    // });
-    //
-    // map.on('click', 'places', e => {
-    //   map.getCanvas().style.cursor = 'pointer';
-    //   map.flyTo({ center: e.features[0].geometry.coordinates, zoom: 14 });
-    //
-    //   popup
-    //     .setLngLat(e.features[0].geometry.coordinates)
-    //     .setHTML(e.features[0].properties.description)
-    //     .addTo(map);
-    // });
-
     // disable map zoom when using scroll
     map.scrollZoom.disable(); // Add zoom and rotation controls to the map.
     map.addControl(new mapboxgl.NavigationControl());
   }
 
+  // componentWillReceiveProps() {
+  //   if (this.state.tourIsPlaying) {
+  //     setInterval(() => {
+  //       // plusOne();
+  //       // this.setState({
+  //       //   value: value,
+  //       //   currentLocation: [this.props.data.backdrops[value].lng, this.props.data.backdrops[value].lat]
+  //       // });
+  //       // console.log(`VALUE 👉 ${value}`);
+  //       console.log(this.props.data.backdrops[this.state.value].title);
+  //     }, 1000);
+  //   }
+  // }
+
   render() {
     const { data } = this.props;
-    console.log(`Map Data`);
-    console.log(data);
-    const { lng, lat, zoom, pitch, bering } = this.state;
+    const { lng, lat, zoom, pitch, bering, tourIsPlaying } = this.state;
+
     return (
       <div>
-        <MapContainer>
-          <div className="inline-block absolute top left mt12 ml12 bg-darken75 color-white z1 py6 px12 round-full txt-s txt-bold">
-            <div>{`Longitude: ${this.state.currentLocation[0]} Latitude: ${this.state.currentLocation[1]} Zoom: ${zoom} Pitch: ${pitch} Bering: ${bering}`}</div>
-          </div>
-          <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
-        </MapContainer>
-        <button onClick={() => this.playTour()}>{this.state.tourIsPlaying ? 'Play Tour' : 'Stop Tour'}</button>
+        <div className="inline-block absolute top left mt12 ml12 bg-darken75 color-white z1 py6 px12 round-full txt-s txt-bold">
+          <div>{`In: ${this.props.data.name} Longitude: ${this.state.currentLocation[0]} Latitude: ${this.state.currentLocation[1]} Zoom: ${zoom} Pitch: ${pitch} Bering: ${bering}`}</div>
+        </div>
+        <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
+        <TourToggle onClick={() => this.playTour()}>{this.state.tourIsPlaying ? 'Play Tour' : 'Stop Tour'}</TourToggle>
       </div>
     );
   }
@@ -236,17 +246,15 @@ class MapboxMap extends React.Component {
 
 export default MapboxMap;
 
-const MapContainer = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 1170px;
-  height: 600px;
-  margin: 0 auto;
-`;
-
 const LocationThumbnail = styled.div`
   position: relative;
   width: 50px;
   height: 50px;
   background: red;
+`;
+
+const TourToggle = styled.button`
+  position: relative;
+  top: 3rem;
+  left: 1rem;
 `;

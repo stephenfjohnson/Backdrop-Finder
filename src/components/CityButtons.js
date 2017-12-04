@@ -62,9 +62,8 @@ const Buttons = styled.div`
   grid-gap: 0.5rem;
   margin-bottom: 1rem;
   button {
-    background: red;
+    background: #4a485a;
     color: white;
-    background: red;
     border-radius: 100px;
     letter-spacing: 1px;
     text-transform: uppercase;

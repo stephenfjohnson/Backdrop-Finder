@@ -1,3 +1,8 @@
+body {
+  background: #201f26;
+  color: white;
+}
+
 .App {
   /*text-align: center;*/
   margin: 2rem auto;
@@ -29,6 +34,8 @@
   }
 }
 
+/*Map Stuff*/
+
 .marker {
   display: block;
   border: none;
@@ -38,4 +45,8 @@
   background-position: center;
   background-repeat: no-repeat;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mapboxgl-map {
+  border-radius: 5px;
 }

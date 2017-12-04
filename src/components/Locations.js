@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { media } from '../style-utils';
@@ -21,25 +22,6 @@ class Locations extends Component {
     console.log(LIST_CITIES);
   }
 
-  handleClick(e) {
-    e.preventDefault();
-    const value = e.target.value;
-    this.setState({ sellectedCityId: value }, () => {
-      console.log(`sellectedCityId: ${this.state.sellectedCityId}`);
-    });
-
-    this.props
-      .mutate({
-        variables: { repoFullName: 'apollographql/apollo-client' }
-      })
-      .then(({ data }) => {
-        console.log('got data', data);
-      })
-      .catch(error => {
-        console.log('there was an error sending the query', error);
-      });
-  }
-
   render() {
     if (this.props.allCitiesQuery.loading) {
       return <Loader />;
@@ -47,9 +29,9 @@ class Locations extends Component {
     return (
       <LocationWrapper>
         {this.props.allCitiesQuery.allCities.map((city, index) => (
-          <Location onClick={e => this.handleClick(e, city.id)} key={city.id} value={city.id}>
-            {city.name}
-          </Location>
+          <Link to={`/city/${city.id}`} key={city.id}>
+            <Location value={city.id}>{city.name}</Location>
+          </Link>
         ))}
       </LocationWrapper>
     );
@@ -65,22 +47,15 @@ const LIST_CITIES = gql`
   }
 `;
 
-const changeCity = gql`
-  mutation changeCity($repoFullName: String!) {
-    changeCity(repoFullName: $repoFullName) {
-      id
-    }
-  }
-`;
-
 export default graphql(LIST_CITIES, { name: 'allCitiesQuery' })(Locations);
 
 const LocationWrapper = styled.section`
   max-width: 1170px;
   width: 100%;
-  margin: 0 auto 2rem auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 2rem;
+  margin: 0 auto 2rem auto;
   ${media.handheld`
     position: absolute;
     top: 0;
@@ -95,10 +70,14 @@ const LocationWrapper = styled.section`
 
 const Location = styled.button`
   color: #b8bfd3;
+  color: white;
   text-align: center;
   padding: 1rem 0;
+  width: 100%;
+  background: #24232c;
   &:hover {
     background: #efefef;
+    background: #eb717c;
     cursor: pointer;
   }
   ${media.handheld`
