@@ -61,7 +61,14 @@ const MapContainer = styled.div`
   width: 100%;
   max-width: 1170px;
   height: 600px;
+  height: 40vh;
   margin: 0 auto;
+  @media (max-width: 1000px) {
+    height: 35vh;
+  }
+  @media (max-width: 800px) {
+    height: 30vh;
+  }
 `;
 
 const BackdropWrapper = styled.div`
@@ -72,4 +79,16 @@ const BackdropWrapper = styled.div`
   padding: 2rem 0;
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 2rem;
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 1.5rem;
+  }
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 1rem;
+  }
+  @media (max-width: 550px) {
+    grid-template-columns: repeat(1, 1fr);
+    grid-column-gap: 1rem;
+  }
 `;
