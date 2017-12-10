@@ -62,6 +62,7 @@ const LogoText = styled.div`
   h2 {
     letter-spacing: 1px;
     font-size: 0.9rem;
+    line-height: 1.2rem;
   }
 `;
 

@@ -18,13 +18,13 @@ class MapboxMap extends React.Component {
     // Set init map location as well as tour status
     this.state = {
       // data: data.backdrops,
-      lng: -118.2387,
-      lat: 34.0485,
-      zoom: 11,
+      lng: -118.30882253519718,
+      lat: 34.049354548371966,
+      zoom: 10,
       pitch: 50,
       bering: 0,
       tourIsPlaying: false,
-      currentLocation: [-118.32513622278702, 34.04802369917432],
+      currentLocation: [-118.30882253519718, 34.049354548371966],
       value: 0,
       mapCenter: []
     };
@@ -45,18 +45,28 @@ class MapboxMap extends React.Component {
     map.on('load', () => {
       const { data } = this.props;
 
+      console.log(data);
+
+      let values = [2, 56, 3, 41, 0, 4, 100, 23];
+      let sum = values.reduce((previous, current) => (current += previous));
+      let avg = sum / values.length;
+      console.log(avg);
+
       // This places all the locations on the map onload.
       for (let item of data.backdrops) {
         let intLng = Number(item.lng);
         let intLat = Number(item.lat);
         let markerLocation = [Number(item.lng), Number(item.lat)];
 
+        // Replace with JSX syntax
+
         let customMarker = document.createElement('div');
         customMarker.className = 'marker';
+        // let customMarker = <div className="marker" />;
         customMarker.style.backgroundImage = `url(${item.instagramPhotoUrl}media/?size=t)`;
 
-        customMarker.style.width = '50px';
-        customMarker.style.height = '50px';
+        // customMarker.style.width = '50px';
+        // customMarker.style.height = '50px';
 
         let popup = new mapboxgl.Popup().setHTML(`<h2>${item.title}</h2><h3>${item.description}</h3>`);
 
@@ -80,6 +90,7 @@ class MapboxMap extends React.Component {
         // new mapboxgl.Popup(customPopup).setLngLat(markerLocation).addTo(map);
 
         customMarker.addEventListener('click', function() {
+          // customMarker.style.zIndex = '20';
           map.flyTo({
             center: markerLocation,
             zoom,
@@ -115,9 +126,9 @@ class MapboxMap extends React.Component {
 
     return (
       <div>
-        <div className="inline-block absolute top left mt12 ml12 bg-darken75 color-white z1 py6 px12 round-full txt-s txt-bold">
+        {/* <div className="inline-block absolute top left mt12 ml12 bg-darken75 color-white z1 py6 px12 round-full txt-s txt-bold">
           <div>{`In: ${this.props.data.name} Longitude: ${this.state.currentLocation[0]} Latitude: ${this.state.currentLocation[1]} Zoom: ${zoom} Pitch: ${pitch} Bering: ${bering}`}</div>
-        </div>
+        </div> */}
         <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
       </div>
     );
