@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Logo from './svgs/Logo';
 
 export default class Loader extends Component {
   render() {
     return (
       <LoaderWrapper>
-        <div className="loader" />
+        <LogoWrapper>
+          <Logo color="#eb717c" />
+        </LogoWrapper>
+        {/* <div className="loader" /> */}
       </LoaderWrapper>
     );
   }
 }
+
+const LogoWrapper = styled.div`
+  width: 40px;
+`;
 
 const LoaderWrapper = styled.div`
   display: flex;

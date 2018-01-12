@@ -13,12 +13,13 @@ class Locations extends Component {
     this.state = {
       sellectedCityId: ''
     };
-    // this.onClick = this.handleClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.props.allCitiesQuery.refetch();
+    console.log(`🚧 🚧 🚧 Locations.js componentWillReceiveProps 🚧 🚧 🚧`);
     console.log(LIST_CITIES);
+    console.log(this.props);
   }
 
   render() {
@@ -49,39 +50,25 @@ const LIST_CITIES = gql`
 export default graphql(LIST_CITIES, { name: 'allCitiesQuery' })(Locations);
 
 const LocationWrapper = styled.section`
-  max-width: 1170px;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 2rem;
-  margin: 0 auto 2rem auto;
-  @media (max-width: 1000px) {
-    grid-column-gap: 1.5rem;
-  }
-  @media (max-width: 800px) {
-    grid-column-gap: 1rem;
-    margin: 0 auto 1rem auto;
-  }
-  @media (max-width: 620px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  overflow-x: hidden;
+  z-index: 100;
+  position: absolute;
 `;
 
 const Location = styled.button`
   color: #b8bfd3;
-  color: white;
   text-align: center;
   padding: 1rem 0;
   width: 100%;
-  background: #24232c;
-  border-radius: 5px;
+  background: white;
+  border-radius: 0;
   &:hover {
-    background: #efefef;
     background: #eb717c;
+    color: white;
     cursor: pointer;
-  }
-  @media (max-width: 800px) {
-    margin-bottom: 1rem;
   }
 `;
 

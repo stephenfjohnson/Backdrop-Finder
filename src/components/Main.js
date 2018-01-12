@@ -16,10 +16,7 @@ const Main = () => (
 );
 
 const MainContent = styled.main`
-  padding: 0 2rem;
-  @media (max-width: 1000px) {
-    padding: 0 1rem;
-  }
+  padding: 0;
 `;
 
 export default Main;

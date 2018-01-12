@@ -1,6 +1,4 @@
 body {
-  background: #201f26;
-  color: white;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -37,6 +35,17 @@ body {
 
 /*Map Stuff*/
 
+@media (max-width: 800px) {
+  .data-previewer {
+    display: none !important;
+  }
+}
+
+.mapboxgl-ctrl-top-right .mapboxgl-ctrl {
+  margin: 66px 10px 0 0;
+  float: right;
+}
+
 .mapboxgl-popup {
   max-width: 300px;
   color: black;
@@ -62,8 +71,8 @@ body {
   display: block;
   border: none;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   cursor: pointer;
   padding: 0;
   background-position: center;
@@ -77,10 +86,10 @@ body {
 .marker::before {
   content: '';
   position: absolute;
-  top: 103%;
+  top: 95%;
   left: 50%;
   transform: translateX(-50%);
-  border-width: 8px 12px 0 12px;
+  border-width: 14px 22px 0 22px;
   border-style: solid;
   border-color: white transparent transparent transparent;
 }

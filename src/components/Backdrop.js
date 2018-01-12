@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Logo from './svgs/Logo';
+import Instagram from './svgs/Instagram';
 // import InstagramEmbed from 'react-instagram-embed';
 
 class Backdrop extends Component {
@@ -13,23 +14,17 @@ class Backdrop extends Component {
   // }
   render() {
     const { backdrop } = this.props;
-    // const { data } = this.state;
-    // console.log(`Backdrop Data`);
-    // console.log(`Backdrop Props`);
-    // console.log(this.props);
     return (
-      <BackdropCard>
-        <Image href={backdrop.instagramPhotoUrl} />
-        <Title>{backdrop.title}</Title>
-        <Description>
-          <i>{backdrop.description}</i>
-        </Description>
-        <Directions href={`http://maps.apple.com/?daddr=?ll=${backdrop.lat},${backdrop.lng}`}>
-          <span className="logo-wrap">
+      <BackdropCard photo={backdrop.instagramPhotoUrl}>
+        <UrlWrapper>
+          <Url target="_blank" href={`http://maps.google.com/maps?daddr=${backdrop.address}`}>
             <Logo color="white" />
-          </span>
-          <span>Get Directions</span>
-        </Directions>
+          </Url>
+          <Url target="_blank" href={backdrop.instagramPhotoUrl}>
+            <Instagram color="white" />
+          </Url>
+        </UrlWrapper>
+        <Title>{backdrop.title}</Title>
       </BackdropCard>
     );
   }
@@ -37,63 +32,50 @@ class Backdrop extends Component {
 
 export default Backdrop;
 
+const backgroundSize = 'media/?size=m';
 const BackdropCard = styled.div`
-  border: 1px solid #f5f5f5;
-  border: 1px solid #4a485a;
+  background: url(${props => props.photo}${backgroundSize}) no-repeat;
+  background-size: cover;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 2rem;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  min-width: 180px;
+  min-height: 200px;
+  margin: 0 0.5rem 1rem 0.5rem;
+  position: relative;
+  padding: 0.5rem;
+  box-shadow: 10px 10px 10px #0000001a;
+  &::after {
+    display: block;
+    content: '';
+    background-image: radial-gradient(50% 100%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.45) 100%);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 5px;
+  }
 `;
 
-const backgroundSize = 'media/?size=m';
-const Image = styled.a`
-  ${'' /* height: 160px; */} width: 100%;
-  background: url(${props => props.href}${backgroundSize}) no-repeat;
-  background-size: cover;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  display: block;
-  &:after {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
-  }
+const UrlWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-content: space-between;
+  justify-content: space-between;
 `;
 
 const Title = styled.h3`
-  padding: 1rem 1rem 0 1rem;
   color: #222328;
+  font-weight: 700;
   color: white;
-  font-weight: 500;
+  z-index: 1;
 `;
 
-const Description = styled.p`
-  font-family: 'Crimson Text', serif;
-  font-style: italicized;
-  font-size: 1.1rem;
-  padding: 0 1rem 0 1rem;
-  color: #b8bfd3;
-`;
-
-const Directions = styled.a`
-  background: #efefef;
-  background: #eb717c;
-  color: #b8bfd3;
-  color: white;
-  padding: 0.5rem 1rem;
-  margin: 1rem;
-  border-radius: 5px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  display: flex;
-  flex-direction: row;
-  span {
-    flex: 1;
-    justify-content: center;
-  }
-  span.logo-wrap {
-    flex: 0 13px;
-    margin-right: 0.8rem;
-  }
+const Url = styled.a`
+  width: 20px;
+  z-index: 1;
 `;

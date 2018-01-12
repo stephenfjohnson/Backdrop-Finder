@@ -1,8 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 
 class Logo extends React.Component {
   render() {
-    console.log(this.props.color);
     return (
       <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 91.86 120.86">
         <g>
@@ -23,3 +23,20 @@ class Logo extends React.Component {
 }
 
 export default Logo;
+
+const Path = styled.path`
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash 5s linear alternate infinite;
+`;
+
+// aliasing to match use of styled-components with npm
+const keyframes = styled.keyframes;
+
+// const transition = keyframes`
+// from {
+//   stroke-dashoffset: 1000;
+// }
+// to {
+//   stroke-dashoffset: 0;
+// }

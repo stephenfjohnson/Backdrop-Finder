@@ -16,13 +16,15 @@ class City extends React.Component {
       return <Loader />;
     }
     return (
-      <div>
-        <Locations />
+      <Content>
+        <LocationsWrapper>
+          <Locations />
+        </LocationsWrapper>
         <MapContainer>
           <MapboxMap data={this.props.data.City} />
         </MapContainer>
         <BackdropWrapper>{this.props.data.City.backdrops.map(backdrop => <Backdrop key={backdrop.id} backdrop={backdrop} />)}</BackdropWrapper>
-      </div>
+      </Content>
     );
   }
 }
@@ -56,29 +58,38 @@ const DisplayCity = graphql(CityQuery, {
 
 export default withRouter(DisplayCity);
 
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: hidden;
+`;
+
+const LocationsWrapper = styled.div``;
+
 const MapContainer = styled.div`
   position: relative;
   width: 100%;
-  max-width: 1170px;
-  height: 600px;
-  height: 40vh;
   margin: 0 auto;
-  @media (max-width: 1000px) {
-    height: 35vh;
-  }
-  @media (max-width: 800px) {
-    height: 30vh;
-  }
+  flex: 1 100%;
 `;
 
 const BackdropWrapper = styled.div`
+  position: relative;
+  position: absolute;
   width: 100%;
-  max-width: 1170px;
   margin: 0 auto;
   display: grid;
-  padding: 2rem 0;
-  grid-template-columns: repeat(4, 1fr);
+  ${'' /* padding: 2rem; */} grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 2rem;
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  ${'' /* margin-top: -215px; */} z-index: 100;
+  padding: 0 1rem;
+  bottom: 0;
+  left: 0;
   @media (max-width: 1000px) {
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 1.5rem;
