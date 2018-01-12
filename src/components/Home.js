@@ -1,8 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
-
-import MapboxMap from './Map';
-import Backdrop from './Backdrop';
 import Locations from './Locations';
 import Loader from './Loader';
 
@@ -10,9 +6,6 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   componentWillReceiveProps(nextProps) {
     this.props.allBackdropsQuery.refetch();
     console.log(this.props.allBackdropsQuery);
@@ -33,16 +26,11 @@ class Home extends React.Component {
 
     return (
       <div className="App">
-        <button onClick={this.changeCity}>Change what city is being queried</button>
+        <h1>Select Location to to view cool places to take photos!</h1>
         <Locations />
-        {/* <MapboxMap data={this.props.allBackdropsQuery.City} /> */}
-        {/* <Backdrop data={this.props.allBackdropsQuery.City} /> */}
       </div>
     );
   }
-  changeCity = async () => {
-    await this.props.mutate({ variables: { id: 'cjac8grum3vjr0183k17y4ijm' } });
-  };
 }
 
 const ALL_BACKDROPS_QUERY = gql`
@@ -93,13 +81,3 @@ const DetailPageWithGraphQL = compose(
 const ListPageWithQuery = graphql(changeId)(DetailPageWithGraphQL);
 
 export default ListPageWithQuery;
-
-// const ListPageWithQuery = graphql(ALL_BACKDROPS_QUERY, {
-//   name: 'allBackdropsQuery',
-//   options: {
-//     fetchPolicy: 'network-only',
-//     variables: { id: 'cjac8gnk83vjo01831fcrw0u6' }
-//   }
-// })(Home);
-//
-// export default ListPageWithQuery;

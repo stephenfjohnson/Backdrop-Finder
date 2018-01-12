@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 
 class Logo extends React.Component {
   render() {
@@ -23,20 +22,3 @@ class Logo extends React.Component {
 }
 
 export default Logo;
-
-const Path = styled.path`
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  animation: dash 5s linear alternate infinite;
-`;
-
-// aliasing to match use of styled-components with npm
-const keyframes = styled.keyframes;
-
-// const transition = keyframes`
-// from {
-//   stroke-dashoffset: 1000;
-// }
-// to {
-//   stroke-dashoffset: 0;
-// }

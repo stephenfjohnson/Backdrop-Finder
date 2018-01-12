@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { transparentize } from 'polished';
-import mapboxgl from 'mapbox-gl';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Loader from './Loader';
@@ -18,8 +16,6 @@ class Locations extends Component {
   componentWillReceiveProps(nextProps) {
     this.props.allCitiesQuery.refetch();
     console.log(`🚧 🚧 🚧 Locations.js componentWillReceiveProps 🚧 🚧 🚧`);
-    console.log(LIST_CITIES);
-    console.log(this.props);
   }
 
   render() {
@@ -71,5 +67,3 @@ const Location = styled.button`
     cursor: pointer;
   }
 `;
-
-const Dropdown = styled.setion;

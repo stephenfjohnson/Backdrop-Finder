@@ -7,7 +7,7 @@ import Backdrop from './Backdrop';
 import Locations from './Locations';
 import Loader from './Loader';
 
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 class City extends React.Component {
