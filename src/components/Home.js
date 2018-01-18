@@ -24,9 +24,10 @@ class Home extends React.Component {
 
     console.log(`🌶 🌶 🌶 🌶 🌶 🌶 🌶`);
 
+    let memes = true;
+
     return (
       <div className="App">
-        <h1>Select Location to to view cool places to take photos!</h1>
         <Locations />
       </div>
     );

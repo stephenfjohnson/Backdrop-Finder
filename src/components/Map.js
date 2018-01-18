@@ -1,5 +1,6 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
+import styled from 'styled-components'
 // import MapboxGeocoder from 'mapbox-gl-geocoder';
 
 // Counter https://react.christmas/4
@@ -30,15 +31,28 @@ class MapboxMap extends React.Component {
 
   componentDidMount() {
     console.log(`🚧 🚧 🚧 map.js componentDidMount 🚧 🚧 🚧`);
-    this.fetchMap(this.props.data.id);
+    console.log(this.props.data);
+    console.log();
+
+    if (this.props.data.backdrops.length !== 0) {
+      this.fetchMap(this.props.data.id);
+    }
+    else {
+      console.log(`No Locations`);
+    }
     // this.props.data.refetch();
   }
 
   componentWillReceiveProps() {
     console.log(`🚧 🚧 🚧 map.js componentWillReceiveProps 🚧 🚧 🚧`);
     console.log(this.props.data);
-    this.updateMarkers('memes');
-    this.fetchMap(this.props.data.id);
+    // this.updateMarkers('memes');
+    if (this.props.data.backdrops.length !== 0) {
+      this.fetchMap(this.props.data.id);
+    }
+    else {
+      console.log(`No Locations`);
+    }
   }
 
   fetchMap = async location => {
@@ -143,15 +157,35 @@ class MapboxMap extends React.Component {
     // const { data } = this.props;
     const { lng, lat, zoom, pitch, bering } = this.state;
 
-    return (
-      <div>
-        <div className="data-previewer inline-block absolute top left mt12 ml12 bg-darken75 color-white z1 py6 px12 round-full txt-s txt-bold">
-          <div>{`In: ${this.props.data.name} Longitude: ${lng} Latitude: ${lat} Zoom: ${zoom} Pitch: ${pitch} Bering: ${bering}`}</div>
+    console.log(`this.props.data.backdrops`);
+    console.log(this.props.data.backdrops);
+
+
+    if (this.props.data.backdrops.length === 0) {
+      return (
+        <NoLocation>
+          <h1>Sorry no locations here yet 🤷🏼‍♂️</h1>
+        </NoLocation>
+      );
+    } else {
+      return (
+        <div>
+          <div className="data-previewer inline-block absolute top left mt12 ml12 bg-darken75 color-white z1 py6 px12 round-full txt-s txt-bold">
+            <div>{`In: ${this.props.data.name} Longitude: ${lng} Latitude: ${lat} Zoom: ${zoom} Pitch: ${pitch} Bering: ${bering}`}</div>
+          </div>
+          <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
         </div>
-        <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
-      </div>
-    );
+      );
+    }
+
   }
 }
 
 export default MapboxMap;
+
+const NoLocation = styled.div`
+height: 100vh;
+display: flex;
+align-items: center;
+  justify-content: center;
+`
